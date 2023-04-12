@@ -50,7 +50,7 @@ class Solution {
 
 #+RESULTS:
 
-** LOOP 3. [[https://leetcode.com/problems/longest-substring-without-repeating-characters/][Longest Substring Without Repeating Characters]] :Medium:HashTable:String:SlidingWindow:
+** DONE 3. [[https://leetcode.com/problems/longest-substring-without-repeating-characters/][Longest Substring Without Repeating Characters]] :Medium:HashTable:String:SlidingWindow:
 Point:
 - The best solution is sliding window
 - what is the sliding window
@@ -143,16 +143,94 @@ class Solution {
 }
 #+end_src
 
-** TODO 4.[[https://leetcode.com/problems/median-of-two-sorted-arrays][Median of Two Sorted Arrays]]  :Hard:Array:BinarySearch:DivideandConquer:
+** DONE 4.[[https://leetcode.com/problems/median-of-two-sorted-arrays][Median of Two Sorted Arrays]] :Hard:Array:BinarySearch:DivideandConquer:
 SCHEDULED: <2023-04-12 Wed>
-Point
-** TODO 5.[[https://leetcode.com/problems/longest-palindromic-substring][Longest Palindromic Substring]]  :Medium:String:DynamicProgramming:
+Point:
+- the one of solution for this problem is merge the two arrays to a new sorted array. but the time complex is O(m + n) space complex is O(m + n)
+- the another [[https://leetcode.com/problems/median-of-two-sorted-arrays/solutions/3382662/best-concise-o-log-min-n1-n2-solution-iterative-c-binary-search/][solution]] is save the space and time complex is O(log(n + m))
+
+#+begin_src java
+class Solution {
+    public double findMedianSortedArrays(int[] nums1, int[] nums2) {
+        int l1 = nums1.length;
+        int l2 = nums2.length;
+        int n = l1 + l2;
+        int[] newArray = new int[n];
+        int i = 0, j = 0, k = 0;
+        while (i <= l1 && j <= l2) {
+            if (i == l1) {
+                while(j < l2) newArray[k++] = nums2[j++];
+                break;
+            } else if (j == l2) {
+                while(i < l1) newArray[k++] = nums1[i++];
+                break;
+            }
+
+            if (nums1[i] < nums2[j]) {
+                newArray[k++] = nums1[i++];
+            } else {
+                newArray[k++] = nums2[j++];
+            }
+        }
+
+        return n%2 == 0 ? (newArray[n/2 - 1] + newArray[n / 2]) / 2.0 : newArray[n/2];
+
+    }
+}
+#+end_src
+** DONE 5.[[https://leetcode.com/problems/longest-palindromic-substring][Longest Palindromic Substring]] :Medium:String:DynamicProgramming:
 SCHEDULED: <2023-04-12 Wed>
-Point
+Point:
+- we have two cases, if the middle index is i:
+  1. the char in i - 1 is equals to i + 1. the middle char is one
+     #+begin_quote
+        adbabdc
+     #+end_quote
+  2. the char in i is equals to i + 1. the middle char is two
+     #+begin_quote
+        baac
+        abba
+     #+end_quote
+- this solution time complex is O(n^2) and space complex is O(n)
+
+#+begin_src java
+class Solution {
+
+    String result = "";
+    public String longestPalindrome(String s) {
+        if (s.length() < 2) {
+            return s;
+        }
+        for (int i = 0; i < s.length(); i++) {
+            expand(s, i, i);
+            expand(s, i, i + 1);
+        }
+        return result;
+    }
+
+    public void expand(String s, int left, int right) {
+        while (left >= 0 && right < s.length()) {
+            if (s.charAt(left) != s.charAt(right)) {
+                break;
+            }
+            left--;
+            right++;
+        }
+        if (result.length() < (right - left - 1)) {
+            result = s.substring(left + 1, right);
+        }
+    }
+}
+#+end_src
+
 ** TODO 7.[[https://leetcode.com/problems/reverse-integer][Reverse Integer]]  :Medium:Math:
+SCHEDULED: <2023-04-13 Thu>
 ** TODO 8.[[https://leetcode.com/problems/string-to-integer-atoi][String to Integer (atoi)]]  :Medium:String:
+SCHEDULED: <2023-04-13 Thu>
 ** TODO 10.[[https://leetcode.com/problems/regular-expression-matching][Regular Expression Matching]]  :Hard:String:DynamicProgramming:Recursion:
+SCHEDULED: <2023-04-14 Fri>
 ** TODO 11.[[https://leetcode.com/problems/container-with-most-water][Container With Most Water]]  :Medium:Array:TwoPointers:Greedy:
+SCHEDULED: <2023-04-14 Fri>
 ** TODO 13.[[https://leetcode.com/problems/roman-to-integer][Roman to Integer]]  :Easy:HashTable:Math:String:
 ** TODO 14.[[https://leetcode.com/problems/longest-common-prefix][Longest Common Prefix]]  :Easy:String:Trie:
 ** TODO 15.[[https://leetcode.com/problems/3sum][3Sum]]  :Medium:Array:TwoPointers:Sorting:
