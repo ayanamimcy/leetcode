@@ -11,6 +11,7 @@ public class Solution {
             expand(s, i, i);
             expand(s, i, i + 1);
         }
+
         return result;
     }
 
