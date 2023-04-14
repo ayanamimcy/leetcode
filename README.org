@@ -1,6 +1,7 @@
 #+title: Leetcode
 #+startup: content
-* leetcode
+
+* leetcode [8/144]
 ** DONE 2. [[https://leetcode.com/problems/add-two-numbers/description/][Add Two Numbers]] :Medium:LinkedList:Math:Recursion:
 Point:
 - how to create a LinkedList
@@ -8,7 +9,7 @@ Point:
 - if the sum value over then 10 should carry it
 
 #+name: add-two-numbers
-#+begin_src java  :dir ~/Documents/JavaProjects/leetcode/src/main/java/com/ayanamimcy/leetcode
+#+begin_src java  :dir /tmp
 public class ListNode {
     int val;
     ListNode next;
@@ -61,7 +62,7 @@ Point:
   #+end_quote
   If your score lies from 2/3 to 3/3 that's a gauranteed sliding window problem
 - the template code for sliding window
-  #+begin_example
+  #+begin_quote
     while(j < size()){
 
     // Calculation's happen's here
@@ -89,7 +90,7 @@ Point:
 ----------------------------------------------
     }
     return ans;
-  #+end_example
+  #+end_quote
 - the approach
   1. Use sliding window with hashset, use left and right pointers to move the window .
   2. If the set doesn't contains character then first add into the set and calculate the maxLength hand-in-hand...
@@ -101,20 +102,20 @@ Point:
   3. 窗口一步一步向右扩展
   4. 窗口在向右扩展滑动过程，需要判断左边是否需要缩减
   5. 最后比较更新答案
-  #+begin_example
-int left =0，right = 0;
-while (right < s.size()){
-  //增大窗口
-  window.add(s[right]);
-  right++;
+     #+begin_quote
+  int left =0，right = 0;
+  while (right < s.size()){
+    //增大窗口
+    window.add(s[right]);
+    right++;
 
-  while (window needs shrink){
-    //缩小窗口
-    window.remove (s[left]);
-    left ++;
+    while (window needs shrink){
+      //缩小窗口
+      window.remove (s[left]);
+      left ++;
+    }
   }
-}
-  #+end_example
+     #+end_quote
 
 #+begin_src java :dir /tmp
 class Solution {
@@ -186,6 +187,7 @@ Point:
   2. the char in i is equals to i + 1. the middle char is two
      #+begin_quote
         baac
+
         abba
      #+end_quote
 - this solution time complex is O(n^2) and space complex is O(n)
@@ -240,8 +242,6 @@ class Solution {
 }
 #+end_src
 
-#+RESULTS:
-
 ** DONE 8.[[https://leetcode.com/problems/string-to-integer-atoi][String to Integer (atoi)]] :Medium:String:
 SCHEDULED: <2023-04-13 Thu>
 Point:
@@ -293,10 +293,67 @@ class Solution {
 
 #+RESULTS:
 
-** TODO 10.[[https://leetcode.com/problems/regular-expression-matching][Regular Expression Matching]] :Hard:String:DynamicProgramming:Recursion:
+** DONE 10.[[https://leetcode.com/problems/regular-expression-matching][Regular Expression Matching]] :Hard:String:DynamicProgramming:Recursion:
 SCHEDULED: <2023-04-14 Fri>
-** TODO 11.[[https://leetcode.com/problems/container-with-most-water][Container With Most Water]] :Medium:Array:TwoPointers:Greedy:
+Point:
+- this is a DP problem (Dynamic Programming).
+- which problem is dp problem
+  1.
+- how to solve a DP problem:
+  1.
+- how to solve this problem [[https://leetcode.com/problems/regular-expression-matching/solutions/191830/java-dp-solution-beats-100-with-explanation/?orderBy=most_votes][sove this problem with dp]]
+  Here the approach is very simple we basically must create a DP to store the states. For any DP problem all follow the same rule that we should memoize the truth value of (n,m)(n,m)(n,m) then we need the values of (n−1,m)(n-1 , m)(n−1,m) or (n,m−1)(n ,m-1)(n,m−1) or (n−1,m−1)(n-1 , m-1)(n−1,m−1) this would be the whole point of DP.
+
+#+begin_src java :dir /tmp
+class Solution {
+    public boolean isMatch(String s, String p) {
+
+        if (p == null || p.length() == 0) return (s == null || s.length() == 0);
+
+        boolean[][] dp = new boolean[s.length() + 1][p.length() + 1];
+        dp[0][0] = true;
+        for (int i=2; i<=p.length(); i++) {
+            dp[0][i] = p.charAt(i-1) == '*' && dp[0][i-2];
+        }
+
+        for (int i = 1; i <= p.length(); i++) {
+            for (int j = 1; j <= s.length(); j++) {
+                if (p.charAt(i - 1) == s.charAt(j - 1) || p.charAt(i - 1) == '.') {
+                    dp[j][i] = dp[j-1][i-1];
+                } else if (p.charAt(i - 1) == '*') {
+                    dp[j][i] = dp[j][i-2] || ((s.charAt(j-1) == p.charAt(i-2) || p.charAt(i-2) == '.') && dp[j-1][i]);
+                }
+            }
+        }
+        return dp[s.length()][p.length()];
+    }
+}
+#+end_src
+
+** DONE 11.[[https://leetcode.com/problems/container-with-most-water][Container With Most Water]] :Medium:Array:TwoPointers:Greedy:
 SCHEDULED: <2023-04-14 Fri>
+Point:
+- the height is the num in the array and the width is the index between two nums
+  area = min(left, right) * (right - left)
+  so if we want to get a biggest area, we should to get a highest height and largest width
+#+begin_src java :dir /tmp
+class Solution {
+    public int maxArea(int[] height) {
+        int i = 0, j = height.length - 1;
+        int max = 0;
+        while (i <= j - 1) {
+            int area = (j - i) * Math.min(height[i], height[j]);
+            max = Math.max(area, max);
+            if (height[i] < height[j]) {
+                i++;
+            } else {
+                j--;
+            }
+        }
+        return max;
+    }
+}
+#+end_src
 ** TODO 13.[[https://leetcode.com/problems/roman-to-integer][Roman to Integer]] :Easy:HashTable:Math:String:
 SCHEDULED: <2023-04-15 Sat>
 ** TODO 14.[[https://leetcode.com/problems/longest-common-prefix][Longest Common Prefix]] :Easy:String:Trie:
@@ -437,3 +494,6 @@ SCHEDULED: <2023-04-16 Sun>
 ** TODO 395.[[https://leetcode.com/problems/longest-substring-with-at-least-k-repeating-characters][Longest Substring with At Least K Repeating Characters]] :Medium:HashTable:String:DivideandConquer:SlidingWindow:
 ** TODO 412.[[https://leetcode.com/problems/fizz-buzz][Fizz Buzz]] :Easy:Math:String:Simulation:
 ** TODO 454.[[https://leetcode.com/problems/4sum-ii][4Sum II]] :Medium:Array:HashTable:
+
+* hard
+** TODO 10.[[https://leetcode.com/problems/regular-expression-matching][Regular Expression Matching]] :Hard:String:DynamicProgramming:Recursion:

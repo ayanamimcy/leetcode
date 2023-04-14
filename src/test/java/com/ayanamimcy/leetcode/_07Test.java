@@ -1,4 +1,4 @@
-package com.ayanamimcy;
+package com.ayanamimcy.leetcode;
 
 import com.ayanamimcy.leetcode._07.Solution;
 import org.junit.Assert;
