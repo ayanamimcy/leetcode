@@ -1,15 +1,14 @@
 #+title: Leetcode
 #+startup: content
 
-* leetcode [8/144]
+* leetcode [10/144]
 ** DONE 2. [[https://leetcode.com/problems/add-two-numbers/description/][Add Two Numbers]] :Medium:LinkedList:Math:Recursion:
 Point:
 - how to create a LinkedList
 - how to iterable a linkedlist
 - if the sum value over then 10 should carry it
 
-#+name: add-two-numbers
-#+begin_src java  :dir /tmp
+#+begin_src java
 public class ListNode {
     int val;
     ListNode next;
@@ -117,7 +116,7 @@ Point:
   }
      #+end_quote
 
-#+begin_src java :dir /tmp
+#+begin_src java
 class Solution {
     public int lengthOfLongestSubstring(String s) {
         HashSet set = new HashSet<>();
@@ -249,7 +248,7 @@ Point:
 - Skip all the leading white spaces. eg: " -123456" --> "-123456"
 - Check for sign cases(+-). eg: "-123456". If +, then set the variable(boolean) isNegative to true and if it's -, set isNegative to false
 - Iterate over the next remaining characters and keep adding them in result by converting the digits(in character form) to integer form. eg: "-123456" --> -123456, until the non-digit character is found.
-#+begin_src java :dir /tmp
+#+begin_src java
 class Solution {
     public int myAtoi(String s) {
         int result = 0;
@@ -304,7 +303,7 @@ Point:
 - how to solve this problem [[https://leetcode.com/problems/regular-expression-matching/solutions/191830/java-dp-solution-beats-100-with-explanation/?orderBy=most_votes][sove this problem with dp]]
   Here the approach is very simple we basically must create a DP to store the states. For any DP problem all follow the same rule that we should memoize the truth value of (n,m)(n,m)(n,m) then we need the values of (n−1,m)(n-1 , m)(n−1,m) or (n,m−1)(n ,m-1)(n,m−1) or (n−1,m−1)(n-1 , m-1)(n−1,m−1) this would be the whole point of DP.
 
-#+begin_src java :dir /tmp
+#+begin_src java
 class Solution {
     public boolean isMatch(String s, String p) {
 
@@ -336,7 +335,7 @@ Point:
 - the height is the num in the array and the width is the index between two nums
   area = min(left, right) * (right - left)
   so if we want to get a biggest area, we should to get a highest height and largest width
-#+begin_src java :dir /tmp
+#+begin_src java
 class Solution {
     public int maxArea(int[] height) {
         int i = 0, j = height.length - 1;
@@ -354,11 +353,58 @@ class Solution {
     }
 }
 #+end_src
-** TODO 13.[[https://leetcode.com/problems/roman-to-integer][Roman to Integer]] :Easy:HashTable:Math:String:
+** DONE 13.[[https://leetcode.com/problems/roman-to-integer][Roman to Integer]] :Easy:HashTable:Math:String:
 SCHEDULED: <2023-04-15 Sat>
-** TODO 14.[[https://leetcode.com/problems/longest-common-prefix][Longest Common Prefix]] :Easy:String:Trie:
+#+begin_src java
+//optimised -> should have thought from right to left.
+class Solution {
+    public int romanToInt(String s) {
+        int res = 0, num = 0;
+        for (int i = s.length()-1; i>=0; i--) {
+            switch(s.charAt(i)) {
+                case 'I': num = 1; break;
+                case 'V': num = 5; break;
+                case 'X': num = 10; break;
+                case 'L': num = 50; break;
+                case 'C': num = 100; break;
+                case 'D': num = 500; break;
+                case 'M': num = 1000; break;
+            }
+            if (4 * num > res) res += num;
+            else res -= num;
+    }
+        return res;
+
+    }
+}
+#+end_src
+** DONE 14.[[https://leetcode.com/problems/longest-common-prefix][Longest Common Prefix]] :Easy:String:Trie:
 SCHEDULED: <2023-04-15 Sat>
-** TODO 15.[[https://leetcode.com/problems/3sum][3Sum]] :Medium:Array:TwoPointers:Sorting:
+Point:
+
+This code is used to find the longest common prefix of an array of strings, which is defined as the longest string that is a prefix of all the strings in the array. By sorting the array and then comparing the first and last elements, the code is able to find the common prefix that would be shared by all strings in the array.
+
+#+begin_src java
+class Solution {
+    public String longestCommonPrefix(String[] strs) {
+        Arrays.sort(strs);
+        String min = strs[0];
+        String max = strs[strs.length - 1];
+        int index = 0;
+
+        while (index < min.length() && index < max.length()) {
+            if (min.charAt(index) == max.charAt(index)) {
+                index++;
+            } else {
+                break;
+            }
+        }
+        return min.substring(0, index);
+    }
+}
+#+end_src
+
+** STRT 15.[[https://leetcode.com/problems/3sum][3Sum]] :Medium:Array:TwoPointers:Sorting:
 SCHEDULED: <2023-04-16 Sun>
 ** TODO 17.[[https://leetcode.com/problems/letter-combinations-of-a-phone-number][Letter Combinations of a Phone Number]] :Medium:HashTable:String:Backtracking:
 SCHEDULED: <2023-04-16 Sun>
