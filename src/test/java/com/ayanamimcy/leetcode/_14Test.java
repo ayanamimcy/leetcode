@@ -1,11 +1,7 @@
 package com.ayanamimcy.leetcode;
 
 import static org.junit.Assert.assertEquals;
-
-import java.net.Socket;
-
 import org.junit.Test;
-
 import com.ayanamimcy.leetcode._14.Solution;
 
 public class _14Test {
