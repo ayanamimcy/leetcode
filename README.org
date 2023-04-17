@@ -1,7 +1,7 @@
 #+title: Leetcode
 #+startup: content
 
-* leetcode [10/144]
+* leetcode [12/144]
 ** DONE 2. [[https://leetcode.com/problems/add-two-numbers/description/][Add Two Numbers]] :Medium:LinkedList:Math:Recursion:
 Point:
 - how to create a LinkedList
@@ -45,9 +45,6 @@ class Solution {
 }
 #+end_src
 
-#+RESULTS: add-two-numbers
-
-#+RESULTS:
 ** DONE 3. [[https://leetcode.com/problems/longest-substring-without-repeating-characters/][Longest Substring Without Repeating Characters]] :Medium:HashTable:String:SlidingWindow:
 Point:
 - The best solution is sliding window
@@ -55,29 +52,26 @@ Point:
   sliding window is a algorithm to solve a sub sequence problem
 - which problem is sliding window problem
   #+begin_quote
- 1. First thing is, we have given something like an "Array" | OR | "String"
- 2. Second thing is, they are talking about either "subsequence" | OR | "substring"
- 3. And third most thing is, either we have given a "window size i.e. k" | OR | we have to "manually find out window size"
+  1. First thing is, we have given something like an "Array" | OR | "String"
+  2. Second thing is, they are talking about either "subsequence" | OR | "substring"
+  3. And third most thing is, either we have given a "window size i.e. k" | OR | we have to "manually find out window size"
   #+end_quote
   If your score lies from 2/3 to 3/3 that's a gauranteed sliding window problem
 - the template code for sliding window
   #+begin_quote
     while(j < size()){
-
     // Calculation's happen's here
 -----------------------------------------------
     if(condition < k){
         j++;
     }
 -----------------------------------------------
-
 -----------------------------------------------
     else if(condition == k){
         // ans <-- calculation
         j++;
     }
 ----------------------------------------------
-
 ----------------------------------------------
     else if(condition > k){
         while(condition > k){
@@ -290,8 +284,6 @@ class Solution {
 }
 #+end_src
 
-#+RESULTS:
-
 ** DONE 10.[[https://leetcode.com/problems/regular-expression-matching][Regular Expression Matching]] :Hard:String:DynamicProgramming:Recursion:
 SCHEDULED: <2023-04-14 Fri>
 Point:
@@ -404,18 +396,124 @@ class Solution {
 }
 #+end_src
 
-** STRT 15.[[https://leetcode.com/problems/3sum][3Sum]] :Medium:Array:TwoPointers:Sorting:
+** DONE 15.[[https://leetcode.com/problems/3sum][3Sum]] :Medium:Array:TwoPointers:Sorting:
 SCHEDULED: <2023-04-16 Sun>
-** TODO 17.[[https://leetcode.com/problems/letter-combinations-of-a-phone-number][Letter Combinations of a Phone Number]] :Medium:HashTable:String:Backtracking:
+- X(time complex is too long) Solved using Array(Three Nested Loop) + Sorting + Hash Table(set). Brute Force Approach
+
+  #+begin_src java
+class Solution {
+    public List<List<Integer>> threeSum(int[] nums) {
+        if (nums == null || nums.length < 3) return new ArrayList<>();
+
+        Arrays.sort(nums);
+        Set<List<Integer>> result = new HashSet<>();
+
+        for(int i =0; i < nums.length; i++) {
+            for (int j = i + 1; j < nums.length; j++) {
+                for (int z= j + 1; z < nums.length; z++) {
+                    if (nums[i] + nums[j] + nums[z] == 0 ) {
+                        result.add(Arrays.asList(nums[i], nums[j], nums[z]));
+                    }
+                }
+            }
+        }
+        return new ArrayList<>(result);
+    }
+}
+  #+end_src
+- Solved using Array(Two Nested Loop) + Sorting. Optimized Approach.
+  #+begin_src java
+public class Solution {
+    public List<List<Integer>> threeSum(int[] nums) {
+        List<List<Integer>> result = new ArrayList<>();
+
+        Arrays.sort(nums);
+        for (int i = 0; i < nums.length; i++) {
+
+            // avoid duplicate A
+            if (i >= 1 && nums[i] == nums[i - 1])
+                continue;
+
+            int left = i + 1;
+            int right = nums.length - 1;
+            while (left < right) {
+                int sum = nums[left] + nums[right] + nums[i];
+                if (sum == 0) {
+                    List<Integer> temp = new ArrayList<>();
+                    temp.add(nums[left]);
+                    temp.add(nums[i]);
+                    temp.add(nums[right]);
+                    result.add(temp);
+                    while (left < right && nums[left] == nums[left + 1])
+                        left++;
+                    while (left < right && nums[right] == nums[right - 1])
+                        right--;
+                    left++;
+                    right--;
+
+                } else if (sum > 0) {
+                    right--;
+                    continue;
+                } else if (sum < 0) {
+                    left++;
+                    continue;
+                }
+            }
+        }
+
+        return result;
+    }
+}
+  #+end_src
+** DONE 17.[[https://leetcode.com/problems/letter-combinations-of-a-phone-number][Letter Combinations of a Phone Number]] :Medium:HashTable:String:Backtracking:
 SCHEDULED: <2023-04-16 Sun>
+- this is a backtracking problem. you can read this page [[https://www.geeksforgeeks.org/introduction-to-backtracking-data-structure-and-algorithm-tutorials/][backtracking]]
+- To solve this problem, we can use a recursive approach. We define a recursive function that takes the input string, an output string to keep track of the current combination of letters, an index to keep track of the current digit in the input string, a vector to store all possible combinations, and a mapping array that maps each digit to the corresponding set of letters.
+
+  #+begin_src java
+class Solution {
+    private static final String[] KEYS = {"", "", "abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv", "wxyz"};
+
+    public List<String> letterCombinations(String digits) {
+        List<String> result = new ArrayList<>();
+        if (digits == null || digits.length() == 0) {
+            return result;
+        }
+        helper(result, digits, new StringBuilder(), 0);
+        return result;
+    }
+
+    private void helper(List<String> result, String digits, StringBuilder sb, int index) {
+        if (index == digits.length()) {
+            result.add(sb.toString());
+            return;
+        }
+        String letters = KEYS[digits.charAt(index) - '0'];
+        for (char c : letters.toCharArray()) {
+            sb.append(c);
+            helper(result, digits, sb, index + 1);
+            sb.deleteCharAt(sb.length() - 1);
+        }
+    }
+}
+  #+end_src
+
 ** TODO 19.[[https://leetcode.com/problems/remove-nth-node-from-end-of-list][Remove Nth Node From End of List]] :Medium:LinkedList:TwoPointers:
+SCHEDULED: <2023-04-18 Tue>
 ** TODO 20.[[https://leetcode.com/problems/valid-parentheses][Valid Parentheses]] :Easy:String:Stack:
+SCHEDULED: <2023-04-18 Tue>
 ** TODO 21.[[https://leetcode.com/problems/merge-two-sorted-lists][Merge Two Sorted Lists]] :Easy:LinkedList:Recursion:
+SCHEDULED: <2023-04-19 Wed>
 ** TODO 22.[[https://leetcode.com/problems/generate-parentheses][Generate Parentheses]] :Medium:String:DynamicProgramming:Backtracking:
+SCHEDULED: <2023-04-19 Wed>
 ** TODO 23.[[https://leetcode.com/problems/merge-k-sorted-lists][Merge k Sorted Lists]] :Hard:LinkedList:DivideandConquer:HeapPriorityQueue:MergeSort:
+SCHEDULED: <2023-04-20 Thu>
 ** TODO 26.[[https://leetcode.com/problems/remove-duplicates-from-sorted-array][Remove Duplicates from Sorted Array]] :Easy:Array:TwoPointers:
+SCHEDULED: <2023-04-20 Thu>
 ** TODO 28.[[https://leetcode.com/problems/find-the-index-of-the-first-occurrence-in-a-string][Find the Index of the First Occurrence in a String]] :Easy:TwoPointers:String:StringMatching:
+SCHEDULED: <2023-04-21 Fri>
 ** TODO 29.[[https://leetcode.com/problems/divide-two-integers][Divide Two Integers]] :Medium:Math:BitManipulation:
+SCHEDULED: <2023-04-21 Fri>
 ** TODO 33.[[https://leetcode.com/problems/search-in-rotated-sorted-array][Search in Rotated Sorted Array]] :Medium:Array:BinarySearch:
 ** TODO 34.[[https://leetcode.com/problems/find-first-and-last-position-of-element-in-sorted-array][Find First and Last Position of Element in Sorted Array]] :Medium:Array:BinarySearch:
 ** TODO 36.[[https://leetcode.com/problems/valid-sudoku][Valid Sudoku]] :Medium:Array:HashTable:Matrix:
