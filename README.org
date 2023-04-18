@@ -1,7 +1,7 @@
 #+title: Leetcode
 #+startup: content
 
-* leetcode [12/144]
+* leetcode [13/144]
 ** DONE 2. [[https://leetcode.com/problems/add-two-numbers/description/][Add Two Numbers]] :Medium:LinkedList:Math:Recursion:
 Point:
 - how to create a LinkedList
@@ -498,10 +498,79 @@ class Solution {
 }
   #+end_src
 
-** TODO 19.[[https://leetcode.com/problems/remove-nth-node-from-end-of-list][Remove Nth Node From End of List]] :Medium:LinkedList:TwoPointers:
+** DONE 19.[[https://leetcode.com/problems/remove-nth-node-from-end-of-list][Remove Nth Node From End of List]] :Medium:LinkedList:TwoPointers:
 SCHEDULED: <2023-04-18 Tue>
+Points:
+- with a single linked list, the only way to find the end of the list, and thus the n'th node from the end, is to actually iterate all the way to the end.
+- we can simply stagger our two pointers by n nodes by giving the first pointer (fast) a head start before starting the second pointer (slow). Doing this will cause slow to reach the n'th node from the end at the same time that fast reaches the end.
+
+  #+begin_src java
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+class Solution {
+
+    public ListNode removeNthFromEnd(ListNode head, int n) {
+        ListNode fast = head, slow = head;
+
+        for (int i = 0; i < n; i++) {
+            fast = fast.next;
+        }
+
+        // n == ListNode.length
+        if (fast == null) return head.next;
+
+        // we neet to find the (n + 1)th node to delete the nth node, so we should test the fast.next == null not fast == null
+        while (fast.next != null) {
+            fast = fast.next;
+            slow = slow.next;
+        }
+
+        slow.next = slow.next.next;
+
+        return head;
+    }
+
+
+}
+  #+end_src
 ** TODO 20.[[https://leetcode.com/problems/valid-parentheses][Valid Parentheses]] :Easy:String:Stack:
 SCHEDULED: <2023-04-18 Tue>
+Point:
+-  this problem we can use stack to solve it
+#+begin_src java
+public class Solution {
+    public boolean isValid(String s) {
+        Stack<Character> stack = new Stack<>();
+        for (char c : s.toCharArray()) {
+            if (c == '(' || c == '{' || c == '[') {
+                stack.push(c);
+            } else {
+                if (stack.empty()) {
+                    return false;
+                }
+                if (c == ')' && stack.peek() == '(') {
+                    stack.pop();
+                } else if (c == '}' && stack.peek() == '{') {
+                    stack.pop();
+                } else if (c == ']' && stack.peek() == '[') {
+                    stack.pop();
+                } else {
+                    return false;
+                }
+            }
+        }
+        return stack.empty();
+    }
+}
+#+end_src
 ** TODO 21.[[https://leetcode.com/problems/merge-two-sorted-lists][Merge Two Sorted Lists]] :Easy:LinkedList:Recursion:
 SCHEDULED: <2023-04-19 Wed>
 ** TODO 22.[[https://leetcode.com/problems/generate-parentheses][Generate Parentheses]] :Medium:String:DynamicProgramming:Backtracking:

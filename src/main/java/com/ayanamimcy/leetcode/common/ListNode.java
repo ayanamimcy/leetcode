@@ -12,9 +12,9 @@ package com.ayanamimcy.leetcode.common;
  */
 public class ListNode<T> {
 
-	private T val;
+	public T val;
 
-	private ListNode<T> next;
+	public ListNode<T> next;
 
 	public ListNode(T val, ListNode<T> next) {
 		super();
