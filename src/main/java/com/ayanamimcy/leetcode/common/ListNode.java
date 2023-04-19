@@ -10,40 +10,22 @@ package com.ayanamimcy.leetcode.common;
  *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
  * }
  */
-public class ListNode<T> {
+public class ListNode {
 
-	public T val;
+	public int val;
 
-	public ListNode<T> next;
-
-	public ListNode(T val, ListNode<T> next) {
-		super();
-		this.val = val;
-		this.next = next;
-	}
-
-	public ListNode(T val) {
-		super();
-		this.val = val;
-	}
+	public ListNode next;
 
 	public ListNode() {
-		super();
+
 	}
 
-	public T getVal() {
-		return val;
-	}
-
-	public void setVal(T val) {
+	public ListNode(int val) {
 		this.val = val;
 	}
 
-	public ListNode<T> getNext() {
-		return next;
-	}
-
-	public void setNext(ListNode<T> next) {
+	public ListNode(int val, ListNode next) {
+		this.val = val;
 		this.next = next;
 	}
 
