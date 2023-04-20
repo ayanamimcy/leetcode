@@ -1,7 +1,7 @@
 #+title: Leetcode
 #+startup: content
 
-* leetcode [16/144]
+* leetcode [18/144]
 ** DONE 2. [[https://leetcode.com/problems/add-two-numbers/description/][Add Two Numbers]] :Medium:LinkedList:Math:Recursion:
 Point:
 - how to create a LinkedList
@@ -641,10 +641,133 @@ class Solution {
 }
 #+end_src
 
-** TODO 23.[[https://leetcode.com/problems/merge-k-sorted-lists][Merge k Sorted Lists]] :Hard:LinkedList:DivideandConquer:HeapPriorityQueue:MergeSort:
+** DONE 23.[[https://leetcode.com/problems/merge-k-sorted-lists][Merge k Sorted Lists]] :Hard:LinkedList:DivideandConquer:HeapPriorityQueue:MergeSort:
 SCHEDULED: <2023-04-20 Thu>
-** TODO 26.[[https://leetcode.com/problems/remove-duplicates-from-sorted-array][Remove Duplicates from Sorted Array]] :Easy:Array:TwoPointers:
+Point:
+- A very simple solution is to loop through all of the nodes, add each node's value to a list, and then convert the result back to a linked list.
+
+  time complex: O(nlogn) -> n is the total nodes in lists
+
+  space complex: O(n)
+  #+begin_src java
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+class Solution {
+    public ListNode mergeKLists(ListNode[] lists) {
+         ArrayList<Integer> arrayList = new ArrayList<Integer>();
+
+        for (int i = 0; i < lists.length; i++) {
+            while (lists[i] != null) {
+                arrayList.add(lists[i].val);
+                lists[i] = lists[i].next;
+            }
+
+        }
+        Collections.sort(arrayList);
+
+        ListNode head = new ListNode();
+        ListNode answer = head;
+        for (int i = 0; i < arrayList.size(); i++) {
+            head.next = new ListNode(arrayList.get(i));
+            head = head.next;
+
+        }
+
+        return answer.next;
+    }
+}
+  #+end_src
+- Another solution is to use recursion. In problem 21, we solved the task of merging two sorted lists. We can apply this method by splitting the list into pairs and merging them recursively.
+
+  time complex: O(nlog(k))
+
+  space complex: O(log(k))
+
+  #+begin_src java
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+
+public class Solution {
+    public ListNode mergeKLists(ListNode[] lists) {
+
+        if (lists == null || lists.length == 0) {
+            return null;
+        }
+		return mergeHepler(lists, 0, lists.length - 1);
+    }
+
+    private ListNode mergeHepler(ListNode[] lists, int start, int end) {
+        if (start == end) {
+            return lists[start];
+        }
+
+        if (start + 1 == end) {
+            return merge(lists[start], lists[end]);
+        }
+
+        int mid = (start + end) / 2;
+        ListNode l1 = mergeHepler(lists, start, mid);
+        ListNode l2 = mergeHepler(lists, mid + 1, end);
+
+        return merge(l1, l2);
+    }
+
+    private ListNode merge(ListNode l1, ListNode l2) {
+        if (l1 != null && l2 != null) {
+            if (l1.val < l2.val) {
+                l1.next = merge(l1.next, l2);
+                return l1;
+            } else {
+                l2.next = merge(l1, l2.next);
+                return l2;
+            }
+        }
+
+        if (l1 == null) {
+            return l2;
+        }
+        return l1;
+    }
+}
+  #+end_src
+** DONE 26.[[https://leetcode.com/problems/remove-duplicates-from-sorted-array][Remove Duplicates from Sorted Array]] :Easy:Array:TwoPointers:
 SCHEDULED: <2023-04-20 Thu>
+Point:
+- we can check if  i is less than i + 1,  we can find an index for all unique numbers in the array. We can then insert each of these numbers to the beginning of the array.
+
+#+begin_src java
+public class Solution {
+
+    public int removeDuplicates(int[] nums) {
+        int result = 1;
+        for (int i = 0; i < nums.length - 1; i++) {
+            if (nums[i] < nums[i + 1]) {
+                nums[result] = nums[i + 1];
+                result++;
+            }
+        }
+
+        return result;
+    }
+
+}
+#+end_src
 ** TODO 28.[[https://leetcode.com/problems/find-the-index-of-the-first-occurrence-in-a-string][Find the Index of the First Occurrence in a String]] :Easy:TwoPointers:String:StringMatching:
 SCHEDULED: <2023-04-21 Fri>
 ** TODO 29.[[https://leetcode.com/problems/divide-two-integers][Divide Two Integers]] :Medium:Math:BitManipulation:
