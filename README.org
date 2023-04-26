@@ -1,7 +1,7 @@
 #+title: Leetcode
 #+startup: content
 
-* leetcode [21/144]
+* leetcode [23/144]
 ** DONE 2. [[https://leetcode.com/problems/add-two-numbers/description/][Add Two Numbers]] :Medium:LinkedList:Math:Recursion:
 Point:
 - how to create a LinkedList
@@ -862,10 +862,64 @@ public class Solution {
     }
 }
 #+end_src
-** TODO 34.[[https://leetcode.com/problems/find-first-and-last-position-of-element-in-sorted-array][Find First and Last Position of Element in Sorted Array]] :Medium:Array:BinarySearch:
+** DONE 34.[[https://leetcode.com/problems/find-first-and-last-position-of-element-in-sorted-array][Find First and Last Position of Element in Sorted Array]] :Medium:Array:BinarySearch:
 SCHEDULED: <2023-04-26 Wed>
-** TODO 36.[[https://leetcode.com/problems/valid-sudoku][Valid Sudoku]] :Medium:Array:HashTable:Matrix:
+Point:
+- we use binary search to search the target value and target + 1 value
+  #+begin_src java
+public class Solution {
+
+    public int[] searchRange(int[] nums, int target) {
+        int start = binarySearch(nums, target);
+        int end = binarySearch(nums, target + 1);
+        return start == end ? new int[] {-1, -1} : new int[] {start, end - 1};
+    }
+
+    public int binarySearch(int[] nums, int target) {
+        int start = 0, end = nums.length;
+
+        while (start < end) {
+            int mid = (start + end) / 2;
+            if (nums[mid] < target) {
+                start = mid + 1;
+            } else {
+                end = mid;
+            }
+        }
+
+        return start;
+    }
+
+}
+  #+end_src
+** DONE 36.[[https://leetcode.com/problems/valid-sudoku][Valid Sudoku]] :Medium:Array:HashTable:Matrix:
 SCHEDULED: <2023-04-26 Wed>
+Point:
+- we can use hashset to save the checked value
+  use (7)1 to save the value 1 in line 7
+  use 1(7) to save the value 1 in row 7
+  use 1(7)1 to save the value in small 3x3 squares
+
+  #+begin_src java
+class Solution {
+    public boolean isValidSudoku(char[][] board) {
+        Set<String> set = new HashSet<>();
+
+        for (int i = 0; i < 9; i++) {
+            for (int j = 0; j < 9; j++) {
+                if (board[i][j] != '.') {
+                    String s = String.format("(%c)", board[i][j]);
+                    if (!set.add(s + i) || !set.add(j + s) || !set.add(i / 3 + s + j / 3)) {
+                        return false;
+                    }
+                }
+            }
+        }
+
+        return true;
+    }
+}
+  #+end_src
 ** TODO 38.[[https://leetcode.com/problems/count-and-say][Count and Say]] :Medium:String:
 SCHEDULED: <2023-04-27 Thu>
 ** TODO 41.[[https://leetcode.com/problems/first-missing-positive][First Missing Positive]] :Hard:Array:HashTable:
@@ -995,6 +1049,11 @@ SCHEDULED: <2023-04-30 Sun>
 ** TODO 454.[[https://leetcode.com/problems/4sum-ii][4Sum II]] :Medium:Array:HashTable:
 
 * paiza
+
+** Aランク
+
+** Sランク
+
 * hard
 ** TODO 10.[[https://leetcode.com/problems/regular-expression-matching][Regular Expression Matching]] :Hard:String:DynamicProgramming:Recursion:
 ** TODO 29.[[https://leetcode.com/problems/divide-two-integers][Divide Two Integers]] :Medium:Math:BitManipulation:
